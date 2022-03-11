@@ -1,0 +1,36 @@
+name: Create Network in GCP
+
+on:
+  workflow_dispatch:
+
+permissions:
+      id-token: write
+      contents: read
+
+env:
+  #DEV_RESOURCE_GROUP_NAME: rg-dlyog-dev
+  ENVIRONMENT_TYPE: dev
+  AZ_LOCATION: westus
+
+jobs:
+  create-resource-group-for-dev-environment:
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-apply
+    if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: ${{ secrets.WORK_LOAD_IDP }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }} 'my-service-account@my-project.iam.gserviceaccount.com'
+
+      

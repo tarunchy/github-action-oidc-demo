@@ -2,7 +2,7 @@
 
 This demo is done using GitHub Open ID Connect Provider as Idp and Setup a Trust with Azure AD App
 
-## Work Identity Federation Architecture
+## Work Identity Federation Design for Azure
 
 ```mermaid
 sequenceDiagram
@@ -37,3 +37,32 @@ Syntax highlighted code block
 - 4. az rest --method POST --uri 'https://graph.microsoft.com/beta/applications/$appId/federatedIdentityCredentials' --body '{"name":"az-dev-credentials","issuer":"https://token.actions.githubusercontent.com","subject":"repo:DigitalCodeScience/github-action-openid-deployment:environment:terraform-dev1-plan-apply","description":"terraform-dev1-plan-apply GitHub Action Workflow","audiences":["api://AzureADTokenExchange"]}'
 
 ```
+
+### Steps to Register an App for OIDC in GCP
+
+```markdown
+Syntax highlighted code block
+
+- 1. gcloud iam workload-identity-pools create "my-pool" \
+  --project="${PROJECT_ID}" \
+  --location="global" \
+  --display-name="widp-prj-fhir-pool"
+
+- 2. gcloud beta iam workload-identity-pools providers create-oidc "widp-prj-fhir-provider" \
+  --project="${PROJECT_ID}" \
+  --location="global" \
+  --workload-identity-pool="widp-prj-fhir-pool" \
+  --display-name="widp-prj-fhir-pool  provider" \
+  --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
+  --issuer-uri="https://token.actions.githubusercontent.com"
+
+  If Face any error use UI to complete this
+
+- 3. gcloud iam service-accounts add-iam-policy-binding "widp-github-action-svcs@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --project="${PROJECT_ID}" \
+  --role="roles/iam.workloadIdentityUser" \
+  --member="principalSet://iam.googleapis.com/projects/1043480954279/locations/global/workloadIdentityPools/my-pool/attribute.repository/tarunchy/github-action-oidc-demo"
+
+```
+
+https://iam.googleapis.com/projects/1043480954279/locations/global/workloadIdentityPools/dev-widp-fhir-pool/providers/github
