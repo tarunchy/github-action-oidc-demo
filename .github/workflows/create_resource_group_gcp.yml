@@ -31,6 +31,6 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: ${{ secrets.WORK_LOAD_IDP }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }} 'my-service-account@my-project.iam.gserviceaccount.com'
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       
