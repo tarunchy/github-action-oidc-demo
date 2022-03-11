@@ -32,5 +32,12 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WORK_LOAD_IDP }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      
+      - name: 'Access secret'
+        run: |-
+          curl https://secretmanager.googleapis.com/v1/projects/1043480954279/secrets/my-secret/versions/1:access \
+            --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}
+
+    # gcloud compute networks create NETWORK --subnet-mode=auto --bgp-routing-mode=DYNAMIC_ROUTING_MODE --mtu=MTU
 
       
