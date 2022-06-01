@@ -26,7 +26,6 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      TF_ROOT: ./az-rg
     runs-on: [self-hosted,Linux,X64,openid]
     environment: terraform-dev1-plan-apply
     if: github.ref == 'refs/heads/main'
@@ -51,7 +50,8 @@ jobs:
       - name: check current directory
         id: basic_cli_command
         run: |
-          pwd
+          tfroot=$(pwd)
+          echo $tfroot >> $TF_ROOT
           ls
 
       - name: Terraform Init
