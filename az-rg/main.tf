@@ -9,8 +9,14 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-  use_oidc = true
+  
   features {}
+  subscription_id    = "00000000-0000-0000-0000-000000000000"
+  client_id          = "00000000-0000-0000-0000-000000000000"
+  use_oidc           = true
+  oidc_request_token = var.oidc_request_token
+  oidc_request_url   = var.oidc_request_url
+  tenant_id          = "00000000-0000-0000-0000-000000000000"
 }
 
 resource "random_pet" "rg-name" {
