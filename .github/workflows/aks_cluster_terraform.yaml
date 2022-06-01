@@ -1,0 +1,179 @@
+name: Manage AKS Cluster
+
+on:
+  workflow_dispatch:
+    inputs:
+      WorkerNodeCount:
+        type: choice
+        description: Select Number of AKS Worker Node
+        options: 
+        - 1
+        - 2
+
+permissions:
+      id-token: write
+      contents: read
+
+env:
+  #DEV_RESOURCE_GROUP_NAME: rg-dlyog-dev
+  ENVIRONMENT_TYPE: dev
+  AZ_LOCATION: westus
+
+jobs:
+  
+  terraformPlan:
+    name: 'Terraform Plan for Create AKS Cluster'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-and-cost
+    if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./az-rg
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          pwd
+          ls
+
+      - name: Terraform Init
+        run: terraform init -backend-config="path=/tmp/terraform_state"
+        
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+      
+      # Generate Infracost JSON file as the baseline.
+      - name: Generate Infracost cost estimate baseline
+        run: infracost breakdown --path=./ --format=json --out-file=/tmp/terraform_state/infracost-base.json
+      # Generate an Infracost diff and save it to a JSON file.
+      - name: Generate Infracost diff
+        run: infracost diff --path=./ --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
+
+      - name: Post Infracost comment
+        run: infracost breakdown --path .
+  
+  
+  terraformDestroy:
+    name: 'Terraform Destroy for  Create AKS Cluster'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-and-cost
+    if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./az-rg
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          pwd
+          ls
+
+      - name: Terraform Init
+        run: terraform init -backend-config="path=/tmp/terraform_state"
+        
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Possible cost saving due this destroy
+        run: infracost breakdown --path .
+      
+      - name: Terraform Destroy
+        run: terraform destroy --auto-approve
+  
+  
+  terraformApply:
+    name: 'Terraform Apply for  Create AKS Cluster'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-apply
+    if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./az-rg
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          pwd
+          ls
+
+      - name: Terraform Init
+        run: terraform init -backend-config="path=/tmp/terraform_state"
+        
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+      
+      # Generate Infracost JSON file as the baseline.
+      - name: Generate Infracost cost estimate baseline
+        run: infracost breakdown --path=./ --format=json --out-file=/tmp/terraform_state/infracost-base.json
+      # Generate an Infracost diff and save it to a JSON file.
+      - name: Generate Infracost diff
+        run: infracost diff --path=./ --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
+
+      - name: Post Infracost comment
+        run: infracost breakdown --path .
+        #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
+        
+      - name: Terraform Apply
+        run: terraform apply --auto-approve
+  
+  
