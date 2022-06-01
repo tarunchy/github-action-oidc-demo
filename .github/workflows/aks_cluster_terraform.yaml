@@ -9,6 +9,13 @@ on:
         options: 
         - 1
         - 2
+      AKSActionType:
+        type: choice
+        description: AKS Cluster Action Type
+        options: 
+        - terraform-dev1-plan-and-cost
+        - terraform-dev1-plan-apply
+        - terraform-dev1-destroy
 
 permissions:
       id-token: write
@@ -28,7 +35,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-and-cost
+    environment: ${{ github.event.inputs.AKSActionType }}
     if: github.ref == 'refs/heads/main'
 
     defaults:
@@ -81,7 +88,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-and-cost
+    environment: ${{ github.event.inputs.AKSActionType }}
     if: github.ref == 'refs/heads/main'
 
     defaults:
@@ -127,7 +134,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-apply
+    environment: ${{ github.event.inputs.AKSActionType }}
     if: github.ref == 'refs/heads/main'
 
     defaults:
