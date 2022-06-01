@@ -30,13 +30,14 @@ jobs:
   
   terraformPlan:
     name: 'Terraform Plan for Create AKS Cluster'
+    if: github.event.inputs.AKSActionType == 'terraform-dev1-plan-and-cost'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
     environment: ${{ github.event.inputs.AKSActionType }}
-    if: github.ref == 'refs/heads/main'
+    
 
     defaults:
       run:
@@ -62,7 +63,7 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state"
+        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
         
       - name: Terraform Validate
         run: terraform validate
@@ -83,13 +84,14 @@ jobs:
   
   terraformDestroy:
     name: 'Terraform Destroy for  Create AKS Cluster'
+    if: github.event.inputs.AKSActionType == 'terraform-dev1-destroy'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
     environment: ${{ github.event.inputs.AKSActionType }}
-    if: github.ref == 'refs/heads/main'
+    
 
     defaults:
       run:
@@ -115,7 +117,7 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state"
+        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
         
       - name: Terraform Validate
         run: terraform validate
@@ -129,13 +131,13 @@ jobs:
   
   terraformApply:
     name: 'Terraform Apply for  Create AKS Cluster'
+    if: github.event.inputs.AKSActionType == 'terraform-dev1-plan-apply'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
     environment: ${{ github.event.inputs.AKSActionType }}
-    if: github.ref == 'refs/heads/main'
 
     defaults:
       run:
@@ -161,7 +163,7 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state"
+        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
         
       - name: Terraform Validate
         run: terraform validate
