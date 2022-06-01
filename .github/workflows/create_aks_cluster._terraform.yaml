@@ -45,7 +45,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=${{ secrets.TF_STATE_SELF_HOSTED_PATH }}/terraform.tfstate"
+        run: terraform init -backend-config="path=/tmp/terraform_state"
         
       - name: Terraform Validate
         run: terraform validate
