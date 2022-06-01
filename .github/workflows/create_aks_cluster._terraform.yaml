@@ -70,7 +70,8 @@ jobs:
         run: infracost diff --path=./ --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
 
       - name: Post Infracost comment
-        run: infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
+        run: infracost breakdown --path .
+        #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
         run: terraform apply --auto-approve
