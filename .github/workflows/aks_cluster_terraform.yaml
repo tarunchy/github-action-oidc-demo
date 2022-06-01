@@ -63,13 +63,13 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
+        run: terraform init 
         
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=deploy.tfplan
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
@@ -117,7 +117,7 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
+        run: terraform init 
         
       - name: Terraform Validate
         run: terraform validate
@@ -163,13 +163,13 @@ jobs:
           ls
 
       - name: Terraform Init
-        run: terraform init -backend-config="path=/tmp/terraform_state/terraform.tfstate"
+        run: terraform init 
         
       - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=deploy.tfplan
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
@@ -183,6 +183,6 @@ jobs:
         #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
-        run: terraform apply --auto-approve
+        run: terraform apply --auto-approve "deploy.tfplan"
   
   
