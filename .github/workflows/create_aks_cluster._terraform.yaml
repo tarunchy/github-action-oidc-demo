@@ -2,6 +2,13 @@ name: create_aks_cluster
 
 on:
   workflow_dispatch:
+    inputs:
+      WorkerNodeCount:
+        type: choice
+        description: Select Number of AKS Worker Node
+        options: 
+        - 1
+        - 2
 
 permissions:
       id-token: write
@@ -13,8 +20,53 @@ env:
   AZ_LOCATION: westus
 
 jobs:
-  create-resource-group-for-dev-environment:
-    name: 'Create AKS Cluster'
+  Check-Terraform-Plan-And-Cost:
+    name: 'verify Terraform Plan and Cost for AKS Cluster Creation'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-and-cost
+    if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./az-rg
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          pwd
+          ls
+
+      - name: Terraform Init
+        run: terraform init -backend-config="path=/tmp/terraform_state"
+        
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+        
+      - name: Compute Cost
+        run: infracost breakdown --path .
+  
+  Apply-Terraform:
+    name: 'Apply Terraform for AKS Cluster Creation'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
