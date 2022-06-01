@@ -1,16 +1,19 @@
 terraform {
+
+  required_version = ">=0.12"
+  
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
       version = "=3.7.0"
     }
   }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
-  use_oidc = true
+  
   features {}
+  use_oidc           = true
 }
 
 resource "random_pet" "rg-name" {
