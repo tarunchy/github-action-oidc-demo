@@ -124,7 +124,7 @@ jobs:
         run: infracost breakdown --path .
       
       - name: Terraform Destroy
-        run: terraform destroy --auto-approve
+        run: terraform apply -destroy --auto-approve
   
   
   terraformApply:
