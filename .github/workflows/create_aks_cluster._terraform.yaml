@@ -65,19 +65,10 @@ jobs:
       
       # Generate an Infracost diff and save it to a JSON file.
       - name: Generate Infracost diff
-        run: |
-          infracost diff --path=${TF_ROOT} \
-                        --format=json \
-                        --compare-to=/tmp/terraform_state/infracost-base.json \
-                        --out-file=/tmp/terraform_state/infracost.json
-                        
+        run: infracost diff --path=${TF_ROOT} --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
+
       - name: Post Infracost comment
-             run: |
-                 infracost comment github --path=/tmp/infracost.json \
-                                          --repo=$GITHUB_REPOSITORY \
-                                          --github-token=${{github.token}} \
-                                          --pull-request=${{github.event.pull_request.number}} \
-                                          --behavior=update
+        run: infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
         run: terraform apply --auto-approve
