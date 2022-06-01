@@ -21,7 +21,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: .
+        working-directory: ./github-action-oidc-demo
 
     steps:
       - name: 'Code checkout'
@@ -35,11 +35,17 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          pwd
+          ls
+          
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config="path=${{ secrets.TF_STATE_SELF_HOSTED_PATH }}/terraform.tfstate"
         
       - name: Terraform Validate
         run: terraform validate
