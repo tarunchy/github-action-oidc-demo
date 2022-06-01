@@ -50,8 +50,7 @@ jobs:
       - name: check current directory
         id: basic_cli_command
         run: |
-          tfroot=$(pwd)
-          echo $tfroot >> $TF_ROOT
+          pwd
           ls
 
       - name: Terraform Init
@@ -65,10 +64,10 @@ jobs:
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
-        run: infracost breakdown --path=${TF_ROOT} --format=json --out-file=/tmp/terraform_state/infracost-base.json
+        run: infracost breakdown --path=./ --format=json --out-file=/tmp/terraform_state/infracost-base.json
       # Generate an Infracost diff and save it to a JSON file.
       - name: Generate Infracost diff
-        run: infracost diff --path=${TF_ROOT} --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
+        run: infracost diff --path=./ --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
 
       - name: Post Infracost comment
         run: infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
