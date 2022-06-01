@@ -21,7 +21,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: .
+        working-directory: ./az-rg
 
     steps:
       - name: 'Code checkout'
