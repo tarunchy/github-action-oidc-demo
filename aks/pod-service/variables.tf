@@ -3,6 +3,7 @@ variable "kubeconfig" {
 }
 
 variable "kubernetes_host" {
-  type          =  "string"
+
+  type = string
   description   = "kubernetes host"
 }
