@@ -10,6 +10,8 @@ resource "azurerm_kubernetes_cluster" "aks_demo" {
   resource_group_name = azurerm_resource_group.aks_demo.name
   location            = azurerm_resource_group.aks_demo.location
   dns_prefix          = var.dns_prefix
+  
+  api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
 
   linux_profile {
     admin_username = var.admin_username

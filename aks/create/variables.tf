@@ -25,3 +25,8 @@ variable "dns_prefix" {
 variable "admin_username" {
     default = "demo"
 }
+
+variable "api_server_authorized_ip_ranges" {
+    type    = list(string)
+    default = ["73.90.23.160"]
+}
