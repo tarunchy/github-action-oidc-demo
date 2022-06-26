@@ -31,7 +31,7 @@ resource "azurerm_kubernetes_cluster" "aks_demo" {
   }
 
   tags = {
-    Environment = "Production"
+    Environment = "Demo"
   }
 }
 

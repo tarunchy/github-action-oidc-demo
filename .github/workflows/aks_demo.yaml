@@ -14,8 +14,12 @@ on:
         description: AKS Cluster Action Type
         options: 
         - AKS-Cluster-Terraform-plan-and-cost
-        - terraform-dev1-plan-apply
-        - terraform-dev1-destroy
+        - AKS-Cluster-Terraform-apply
+        - AKS-Cluster-Terraform-destroy
+        - AKS-Pod-Service-Plan
+        - AKS-Pod-Service-Apply
+        - AKS-Pod-Service-Destroy
+
 
 permissions:
       id-token: write
@@ -78,7 +82,7 @@ jobs:
   
   terraformApply:
     name: 'Terraform Apply for  Create AKS Cluster'
-    if: github.event.inputs.AKSActionType == 'terraform-dev1-plan-apply'
+    if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-apply'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -135,15 +139,15 @@ jobs:
       - name: Post AKS Cluster Creation Activity
         id: Configure AKS
         run: |
-          terraform output kube_config > ~/.kube/aksconfig
-          export KUBECONFIG=~/.kube/aksconfig
+          terraform output kube_config > ~/.kube/${{ github.run_id }}
+          export KUBECONFIG=~/.kube/${{ github.run_id }}
           kubectl get nodes
 
   
   terraformAksPodServiceDeploy:
     needs: terraformApply
     name: 'Terraform AKS Pod Service Deploy'
-    if: github.event.inputs.AKSActionType == 'terraform-dev1-plan-apply'
+    if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-apply'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -171,8 +175,8 @@ jobs:
       - name: check current directory
         id: basic_cli_command
         run: |
-          pwd
-          ls
+          export KUBECONFIG=~/.kube/${{ github.run_id }}
+          kubectl get nodes
 
       - name: Terraform Init
         run: terraform init 
@@ -199,7 +203,7 @@ jobs:
   
   terraformDestroy:
     name: 'Terraform Destroy for  Create AKS Cluster'
-    if: github.event.inputs.AKSActionType == 'terraform-dev1-destroy'
+    if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-destroy'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
