@@ -138,7 +138,7 @@ jobs:
       
       - name: Post AKS Cluster Creation Activity
         run: |
-          terraform output kube_config > ~/.kube/${{ github.run_id }}
+          terraform output -raw kube_config > ~/.kube/${{ github.run_id }}
           export KUBECONFIG=~/.kube/${{ github.run_id }}
           kubectl get nodes
 
