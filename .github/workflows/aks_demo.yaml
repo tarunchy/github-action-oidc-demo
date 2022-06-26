@@ -143,8 +143,8 @@ jobs:
   
   terraformAksPodServiceDeploy:
     needs: terraformApply
-    name: 'Deploy App to AKS Cluster'
-    if: github.event.inputs.AKSActionType == 'Create AKS Cluster and Deploy App' || github.event.inputs.AKSActionType == 'Deploy App to AKS Cluster'
+    name: 'Deploy App Post AKS Cluster'
+    if: github.event.inputs.AKSActionType == 'Create AKS Cluster and Deploy App'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -161,18 +161,11 @@ jobs:
       - name: 'Code checkout'
         uses: actions/checkout@v2
         
-      - name: 'Az CLI login'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      
       - name: check current directory
         id: basic_cli_command
         run: |
           export KUBECONFIG=~/.kube/app1K8Config
+          export KUBERNETES_MASTER=~/.kube/app1K8Config
           kubectl get nodes
 
       - name: Terraform Init
@@ -199,6 +192,55 @@ jobs:
         run: terraform apply --auto-approve "deploy.tfplan"
   
 
+  DeployAppToAKSCluster:
+    needs: terraformApply
+    name: 'Deploy App if AKS Cluster already created'
+    if: github.event.inputs.AKSActionType == 'Deploy App to AKS Cluster'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: [self-hosted,Linux,X64,openid]
+    environment: terraform-dev1-plan-and-cost
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./aks/pod-service
+
+    steps:
+      - name: 'Code checkout'
+        uses: actions/checkout@v2
+        
+      - name: check current directory
+        id: basic_cli_command
+        run: |
+          export KUBECONFIG=~/.kube/app1K8Config
+          export KUBERNETES_MASTER=~/.kube/app1K8Config
+          kubectl get nodes
+
+      - name: Terraform Init
+        run: terraform init 
+        
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=deploy.tfplan
+      
+      # Generate Infracost JSON file as the baseline.
+      - name: Generate Infracost cost estimate baseline
+        run: infracost breakdown --path=./ --format=json --out-file=/tmp/terraform_state/infracost-base.json
+      # Generate an Infracost diff and save it to a JSON file.
+      - name: Generate Infracost diff
+        run: infracost diff --path=./ --format=json --compare-to=/tmp/terraform_state/infracost-base.json --out-file=/tmp/terraform_state/infracost.json
+
+      - name: Post Infracost comment
+        run: infracost breakdown --path .
+        #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
+        
+      - name: Terraform Apply
+        run: terraform apply --auto-approve "deploy.tfplan"
   
   terraformDestroy:
     name: 'Destroy AKS Cluster'
