@@ -217,10 +217,10 @@ jobs:
         id: basic_cli_command
         run: |
           export KUBECONFIG=~/.kube/app1K8Config
-          echo "K8_HOST=$(cat ~/.kube/app1K8host)" >> $GITHUB_ENV
+          export KUBERNETES_MASTER=~/.kube/app1K8Config
           kubectl get nodes
 
-       - name: Terraform Init
+      - name: Terraform Init
         run: terraform init 
         
       - name: Terraform Validate
