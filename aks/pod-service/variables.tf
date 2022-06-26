@@ -7,3 +7,7 @@ variable "kubernetes_host" {
   type = string
   description   = "kubernetes host"
 }
+
+variable "namespace" {
+  default = "app1"
+}
