@@ -137,7 +137,6 @@ jobs:
         run: terraform apply --auto-approve "deploy.tfplan"
       
       - name: Post AKS Cluster Creation Activity
-        id: Configure AKS
         run: |
           terraform output kube_config > ~/.kube/${{ github.run_id }}
           export KUBECONFIG=~/.kube/${{ github.run_id }}
