@@ -193,7 +193,6 @@ jobs:
   
 
   DeployAppToAKSCluster:
-    needs: terraformApply
     name: 'Deploy App if AKS Cluster already created'
     if: github.event.inputs.AKSActionType == 'Deploy App to AKS Cluster'
     env:
