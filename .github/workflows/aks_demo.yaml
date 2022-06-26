@@ -200,6 +200,8 @@ jobs:
       - name: Terraform Apply
         run: terraform apply --auto-approve "deploy.tfplan"
   
+  
+  
   terraformDestroy:
     name: 'Terraform Destroy for  Create AKS Cluster'
     if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-destroy'
