@@ -291,7 +291,7 @@ jobs:
         run: terraform apply -destroy --auto-approve
   
   terraformDestroyPodService:
-    name: 'Destroy AKS Cluster'
+    name: 'Destroy App In AKS Cluster'
     if: github.event.inputs.AKSActionType == 'Destroy App In AKS Cluster'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
