@@ -169,6 +169,7 @@ jobs:
           export KUBECONFIG=~/.kube/app1K8Config
           echo "K8_HOST=$(cat ~/.kube/app1K8host)" >> $GITHUB_ENV
           kubectl get nodes
+          echo ${{ env.K8_HOST }}
 
       - name: Terraform Init
         run: terraform init 
@@ -177,7 +178,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="kubernetes_host=${{ env.K8_HOST }}" -out=deploy.tfplan
+        run: terraform plan -out=deploy.tfplan
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
@@ -191,7 +192,7 @@ jobs:
         #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
-        run: terraform apply -var="kubernetes_host=${{ env.K8_HOST }}" --auto-approve "deploy.tfplan"
+        run: terraform apply --auto-approve "deploy.tfplan"
   
 
   DeployAppToAKSCluster:
@@ -217,7 +218,6 @@ jobs:
         id: basic_cli_command
         run: |
           export KUBECONFIG=~/.kube/app1K8Config
-          export KUBERNETES_MASTER=~/.kube/app1K8Config
           kubectl get nodes
 
       - name: Terraform Init
@@ -227,7 +227,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var="kubernetes_host=${{ env.K8_HOST }}" -out=deploy.tfplan
+        run: terraform plan -out=deploy.tfplan
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline

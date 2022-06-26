@@ -1,13 +1,3 @@
 variable "kubeconfig" {
-  default = "/home/dlyog1/.kube"
-}
-
-variable "kubernetes_host" {
-
-  type = string
-  description   = "kubernetes host"
-}
-
-variable "namespace" {
-  default = "app1"
+  default = "~/.kube/app1K8Config"
 }
