@@ -9,11 +9,6 @@ resource "kubernetes_namespace" "example" {
 resource "kubernetes_pod" "web" {
   metadata {
     name = "nginx"
-
-    labels {
-      name = "nginx"
-    }
-
     namespace = "${kubernetes_namespace.example.metadata.0.name}"
   }
 
