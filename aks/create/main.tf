@@ -64,6 +64,7 @@ output "id" {
 
 output "client_key" {
   value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.client_key
+  sensitive = true
 }
 
 output "client_certificate" {
@@ -83,6 +84,7 @@ output "kube_config" {
 
 output "host" {
   value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.host
+  sensitive = true
 }
 
 output "configure" {
