@@ -137,6 +137,7 @@ jobs:
       - name: Post AKS Cluster Creation Activity
         run: |
           terraform output -raw kube_config > ~/.kube/app1K8Config
+          terraform output -raw host > ~/.kube/app1K8host
           export KUBECONFIG=~/.kube/app1K8Config
           kubectl get nodes
 
@@ -149,6 +150,7 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      K8_HOST: kubernetes_host
     runs-on: [self-hosted,Linux,X64,openid]
     environment: terraform-dev1-plan-and-cost
 
@@ -165,7 +167,7 @@ jobs:
         id: basic_cli_command
         run: |
           export KUBECONFIG=~/.kube/app1K8Config
-          export KUBERNETES_MASTER=~/.kube/app1K8Config
+          echo "K8_HOST=$(cat ~/.kube/app1K8host)" >> $GITHUB_ENV
           kubectl get nodes
 
       - name: Terraform Init
@@ -189,7 +191,7 @@ jobs:
         #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
-        run: terraform apply --auto-approve "deploy.tfplan"
+        run: terraform apply -var="kubernetes_host=${{ env.K8_HOST }}" --auto-approve "deploy.tfplan"
   
 
   DeployAppToAKSCluster:
@@ -239,7 +241,7 @@ jobs:
         #infracost comment github --path=/tmp/terraform_state/infracost.json --repo=$GITHUB_REPOSITORY --github-token=${{github.token}} --behavior=update
         
       - name: Terraform Apply
-        run: terraform apply --auto-approve "deploy.tfplan"
+        run: terraform apply -var="image_id=ami-abc123" --auto-approve "deploy.tfplan"
   
   terraformDestroy:
     name: 'Destroy AKS Cluster'

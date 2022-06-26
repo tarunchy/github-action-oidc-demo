@@ -1,12 +1,19 @@
 terraform {
+
+  backend "local" {
+    path = "/tmp/terraform_state/aks_deploy_app1_demo.tfstate"
+  }
+
+  required_version = ">=0.12"
+  
   required_providers {
     kubernetes = {
       source = "hashicorp/kubernetes"
       version = ">= 2.0.3"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.1.0"
-    }
   }
+}
+
+provider "kubernetes" {
+  host = var.kubernetes_host
 }
