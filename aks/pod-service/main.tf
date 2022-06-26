@@ -1,48 +1,61 @@
-provider "kubernetes" {}
-
-resource "kubernetes_namespace" "example" {
+resource "kubernetes_namespace" "test" {
   metadata {
-    name = "${var.namespace}"
+    name = "test"
   }
 }
 
-resource "kubernetes_pod" "web" {
+resource "kubernetes_deployment" "test" {
   metadata {
-    name = "nginx"
-
-    labels = {
-      name = "nginx"
-    }
-
-    namespace = "${kubernetes_namespace.example.metadata.0.name}"
+    name = "test"
+    namespace= kubernetes_namespace.test.metadata.0.name
   }
-
   spec {
-    container {
-      image = "nginx:1.7.9"
-      name  = "nginx"
+    replicas = 2
+    selector {
+      match_labels = {
+        app = "test"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app  = "test"
+        }
+      }
+      spec {
+        container {
+          image = "nginx:1.19.4"
+          name  = "nginx"
+
+          resources {
+            limits = {
+              memory = "512M"
+              cpu = "1"
+            }
+            requests = {
+              memory = "256M"
+              cpu = "50m"
+            }
+          }
+        }
+      }
     }
   }
 }
 
-resource "kubernetes_service" "web" {
-  metadata {
-    name      = "nginx"
-    namespace = "${kubernetes_namespace.example.metadata.0.name}"
+resource helm_release nginx_ingress {
+  name       = "nginx-ingress-controller"
+
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx-ingress-controller"
+
+  set {
+    name  = "service.type"
+    value = "ClusterIP"
   }
+}
 
-  spec {
-    selector = {
-      name = "${kubernetes_pod.web.metadata.0.labels.name}"
-    }
-
-    session_affinity = "ClientIP"
-
-    port {
-      port        = 80
-      target_port = 80
-    }
-
-    type = "LoadBalancer"
-  }
+resource "local_file" "kubeconfig" {
+  content = var.kubeconfig
+  filename = "${path.root}/kubeconfig"
 }

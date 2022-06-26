@@ -138,15 +138,15 @@ jobs:
       
       - name: Post AKS Cluster Creation Activity
         run: |
-          terraform output -raw kube_config > ~/.kube/${{ github.run_id }}
-          export KUBECONFIG=~/.kube/${{ github.run_id }}
+          terraform output -raw kube_config > ~/.kube/app1K8Config
+          export KUBECONFIG=~/.kube/app1K8Config
           kubectl get nodes
 
   
   terraformAksPodServiceDeploy:
     needs: terraformApply
     name: 'Terraform AKS Pod Service Deploy'
-    if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-apply'
+    if: github.event.inputs.AKSActionType == 'AKS-Cluster-Terraform-apply' || github.event.inputs.AKSActionType == 'AKS-Pod-Service-Plan'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -174,7 +174,7 @@ jobs:
       - name: check current directory
         id: basic_cli_command
         run: |
-          export KUBECONFIG=~/.kube/${{ github.run_id }}
+          export KUBECONFIG=~/.kube/app1K8Config
           kubectl get nodes
 
       - name: Terraform Init
@@ -200,7 +200,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply --auto-approve "deploy.tfplan"
   
-  
+
   
   terraformDestroy:
     name: 'Terraform Destroy for  Create AKS Cluster'

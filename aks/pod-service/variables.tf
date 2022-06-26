@@ -1,3 +1,3 @@
-variable "namespace" {
-  default = "aks-demo"
+variable "kubeconfig" {
+  default = "/home/dlyog1/.kube"
 }
