@@ -1,15 +1,35 @@
 variable "resource_group_name" {
-  description = "The name of the resource group."
+  description = "Alphanumerics, underscores, parentheses, hyphens, periods, and unicode characters that match the regex documentation."
 }
 
 variable "resource_group_location" {
-  description = "The location of the resource group."
+  description = "Location of the resource group."
 }
 
 variable "tags" {
   description = "Tags to be applied to the resources."
   type        = map(string)
 }
+
+variable "vnet_address_space" {
+  description = "The address space that is used by the virtual network."
+}
+
+variable "subnet_prefixes" {
+  description = "The address prefix to use for the subnet."
+  type        = list(string)
+}
+
+variable "vnet_name" {
+  description = "The name of the virtual network."
+}
+
+variable "subnet_names" {
+  description = "A list of names for each subnet."
+  type        = list(string)
+}
+
+
 
 variable "app_service_plan_name" {
   description = "The name of the App Service Plan."
@@ -19,13 +39,7 @@ variable "app_service_name" {
   description = "The name of the App Service."
 }
 
-variable "vnet_name" {
-  description = "The name of the VNet."
-}
 
-variable "subnet_name" {
-  description = "The name of the subnet."
-}
 
 variable "app_service_plan_kind" {
   description = "The kind of the App Service Plan."
@@ -53,3 +67,4 @@ variable "app_service_always_on" {
   description = "Specifies whether the app service is always on."
   type        = bool
 }
+
