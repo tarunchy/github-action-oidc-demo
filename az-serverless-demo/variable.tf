@@ -39,17 +39,6 @@ variable "app_service_name" {
   description = "The name of the App Service."
 }
 
-
-
-variable "app_service_plan_kind" {
-  description = "The kind of the App Service Plan."
-}
-
-variable "app_service_plan_reserved" {
-  description = "Specifies if the App Service Plan is reserved."
-  type        = bool
-}
-
 variable "app_service_plan_sku_tier" {
   description = "The tier of the App Service Plan's SKU."
 }

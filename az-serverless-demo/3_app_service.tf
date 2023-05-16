@@ -1,30 +1,24 @@
-resource "azurerm_app_service_plan" "app_service_plan" {
+resource "azurerm_service_plan" "app_service_plan" {
   name                = var.app_service_plan_name
-  location            = var.resource_group_location
   resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
+  os_type             = "Linux"
 
-  kind     = var.app_service_plan_kind
-  reserved = var.app_service_plan_reserved
-
-  sku {
-    tier = var.app_service_plan_sku_tier
-    size = var.app_service_plan_sku_size
-  }
+  sku_name = "${var.app_service_plan_sku_tier}_${var.app_service_plan_sku_size}"
 
   tags = var.tags
 }
 
-resource "azurerm_app_service" "app_service" {
+resource "azurerm_linux_web_app" "app_service" {
   name                = var.app_service_name
-  location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+  location            = var.resource_group_location
+  service_plan_id     = azurerm_service_plan.app_service_plan.id
 
   site_config {
     linux_fx_version = var.linux_fx_version
     always_on        = var.app_service_always_on
   }
-
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
