@@ -88,4 +88,3 @@ resource "azurerm_subnet" "vnet_integration_subnet" {
     }
   }
 }
-
