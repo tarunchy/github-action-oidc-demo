@@ -78,7 +78,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-apply
+    environment: cs-hackathon
 
     defaults:
       run:
