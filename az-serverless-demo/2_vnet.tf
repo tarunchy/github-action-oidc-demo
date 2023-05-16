@@ -64,3 +64,17 @@ resource "azurerm_subnet_network_security_group_association" "nsg_association" {
   subnet_id                 = azurerm_subnet.subnet[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg[count.index].id
 }
+
+resource "azurerm_subnet" "endpoint_subnet" {
+  name                 = var.endpoint_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [var.endpoint_subnet_prefix]
+}
+
+resource "azurerm_subnet" "vnet_integration_subnet" {
+  name                 = var.vnet_integration_subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [var.integration_subnet_prefix]
+}
