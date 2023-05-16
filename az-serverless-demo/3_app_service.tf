@@ -59,14 +59,14 @@ resource "azurerm_linux_web_app" "backwebapp" {
 
 resource "azurerm_linux_web_app_slot" "frontwebapp" {
 
-  name           = var.slot_name-frontwebapp-slot
+  name           = "${var.slot_name}-frontwebapp-slot"
   app_service_id = azurerm_linux_web_app.frontwebapp.id
 
   site_config {}
 }
 
 resource "azurerm_linux_web_app_slot" "backwebapp" {
-  name           = var.slot_name-backwebapp-slot
+  name           = "${var.slot_name}-backwebapp-slot"
   app_service_id = azurerm_linux_web_app.backwebapp.id
 
   site_config {}
