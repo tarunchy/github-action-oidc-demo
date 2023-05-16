@@ -3,6 +3,12 @@ name: Hackathon
 on:
   workflow_dispatch:
     inputs:
+      targetEnv:
+        type: choice
+        description: Target Environment
+        options: 
+        - terraform-dev1-plan-apply
+        - cs-hackathon
       actionType:
         type: choice
         description: Action Type
@@ -25,7 +31,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-and-cost
+    environment: ${{ github.event.inputs.targetEnv }}
     
 
     defaults:
@@ -78,7 +84,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: [self-hosted,Linux,X64,openid]
-    environment: terraform-dev1-plan-apply
+    environment: {{ github.event.inputs.targetEnv }}
 
     defaults:
       run:
