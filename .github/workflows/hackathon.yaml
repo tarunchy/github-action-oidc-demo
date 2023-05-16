@@ -46,19 +46,19 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Deploy backend to App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
-        slot-name: 'development-backwebapp-slot'
-        package: './az-serverless-backend-app'
-
     - name: Deploy frontend to App Service
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
         slot-name: 'development-frontwebapp-slot'
         package: './az-serverless-frontend-app'
+    
+    - name: Deploy backend to App Service
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
+        slot-name: 'development-backwebapp-slot'
+        package: './az-serverless-backend-app'
  
   
   terraformDestroy:
