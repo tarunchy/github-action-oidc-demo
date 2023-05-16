@@ -39,12 +39,8 @@ variable "app_service_name" {
   description = "The name of the App Service."
 }
 
-variable "app_service_plan_sku_tier" {
+variable "app_service_plan_sku_name" {
   description = "The tier of the App Service Plan's SKU."
-}
-
-variable "app_service_plan_sku_size" {
-  description = "The size of the App Service Plan's SKU."
 }
 
 variable "linux_fx_version" {

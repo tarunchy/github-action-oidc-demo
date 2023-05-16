@@ -4,7 +4,7 @@ resource "azurerm_service_plan" "app_service_plan" {
   location            = var.resource_group_location
   os_type             = "Linux"
 
-  sku_name = "${var.app_service_plan_sku_tier}_${var.app_service_plan_sku_size}"
+  sku_name = var.app_service_plan_sku_name
 
   tags = var.tags
 }
