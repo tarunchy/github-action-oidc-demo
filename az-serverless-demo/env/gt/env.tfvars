@@ -16,9 +16,9 @@ app_service_plan_sku_name = "P1v2"
 linux_fx_version          = "PYTHON|3.9"
 app_service_always_on     = true
 
-frontwebapp_name           = "auto-auth-front-prod"
-backwebapp_name            = "auto-auth-back-prod"
-private_endpoint_name      = "auto-auth-private-endpoint-prod"
+frontwebapp_name           = "cs-hack-front-dev"
+backwebapp_name            = "cs-hack-back-dev"
+private_endpoint_name      = "cs-hack-private-endpoint-dev"
 dns_private_zone_name      = "privatelink.azurewebsites.net"
-private_dns_zone_link_name = "auto-auth-dns-zone-link-prod"
+private_dns_zone_link_name = "cs-hack-dns-zone-link-dev"
 
