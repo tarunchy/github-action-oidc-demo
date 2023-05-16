@@ -35,10 +35,6 @@ variable "app_service_plan_name" {
   description = "The name of the App Service Plan."
 }
 
-variable "app_service_name" {
-  description = "The name of the App Service."
-}
-
 variable "app_service_plan_sku_name" {
   description = "The tier of the App Service Plan's SKU."
 }

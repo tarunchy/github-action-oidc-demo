@@ -10,8 +10,8 @@ vnet_name          = "vnet-its-sls-dev-wu-1"
 subnet_names       = ["snet-its-sls-dev-wu-1", "snet-its-sls-dev-wu-2", "snet-its-sls-dev-wu-3", "snet-its-sls-dev-wu-4"]
 
 # App Service Configs
-app_service_plan_name     = "its-sls-dev-wu-asp-1"
-app_service_name          = "its-sls-dev-wu-as-1"
+app_service_plan_name = "its-sls-dev-wu-asp-1"
+
 app_service_plan_sku_name = "P1v2"
 linux_fx_version          = "PYTHON|3.9"
 app_service_always_on     = true
