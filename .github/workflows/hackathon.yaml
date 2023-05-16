@@ -63,7 +63,7 @@ jobs:
         run: infracost breakdown --path .
       
       - name: Terraform Destroy
-        run: terraform apply -destroy --auto-approve
+        run: terraform destroy -var-file="./env/gt/env.tfvars" --auto-approve
 
   CreateResourceGroupPlan:
     name: 'Hackathon Infrastructure - Plan'
