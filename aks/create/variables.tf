@@ -1,16 +1,16 @@
 ## Azure config variables ##
-variable location {
+variable "location" {
   default = "westus"
 }
 
 ## Resource group variables ##
-variable resource_group_name {
+variable "resource_group_name" {
   default = "aksdemo-rg"
 }
 
 
 ## AKS kubernetes cluster variables ##
-variable cluster_name {
+variable "cluster_name" {
   default = "aksdemo1"
 }
 
@@ -23,10 +23,10 @@ variable "dns_prefix" {
 }
 
 variable "admin_username" {
-    default = "demo"
+  default = "demo"
 }
 
 variable "api_server_authorized_ip_ranges" {
-    type    = list(string)
-    default = ["73.90.23.160"]
+  type    = list(string)
+  default = ["73.90.23.160"]
 }

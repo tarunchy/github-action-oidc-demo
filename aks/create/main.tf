@@ -5,12 +5,12 @@ resource "azurerm_resource_group" "aks_demo" {
 }
 
 ## AKS kubernetes cluster ##
-resource "azurerm_kubernetes_cluster" "aks_demo" { 
+resource "azurerm_kubernetes_cluster" "aks_demo" {
   name                = var.cluster_name
   resource_group_name = azurerm_resource_group.aks_demo.name
   location            = azurerm_resource_group.aks_demo.location
   dns_prefix          = var.dns_prefix
-  
+
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
 
   linux_profile {
@@ -39,7 +39,7 @@ resource "azurerm_kubernetes_cluster" "aks_demo" {
 
 ## Private key for the kubernetes cluster ##
 resource "tls_private_key" "key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 ## Save the private key in the local workspace ##
@@ -61,31 +61,31 @@ EOF
 
 # Example attributes available for output
 output "id" {
-    value = azurerm_kubernetes_cluster.aks_demo.id
+  value = azurerm_kubernetes_cluster.aks_demo.id
 }
 
 output "client_key" {
-  value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.client_key
+  value     = azurerm_kubernetes_cluster.aks_demo.kube_config.0.client_key
   sensitive = true
 }
 
 output "client_certificate" {
-  value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.client_certificate
+  value     = azurerm_kubernetes_cluster.aks_demo.kube_config.0.client_certificate
   sensitive = true
 }
 
 output "cluster_ca_certificate" {
-  value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.cluster_ca_certificate
+  value     = azurerm_kubernetes_cluster.aks_demo.kube_config.0.cluster_ca_certificate
   sensitive = true
 }
 
 output "kube_config" {
-  value = azurerm_kubernetes_cluster.aks_demo.kube_config_raw
+  value     = azurerm_kubernetes_cluster.aks_demo.kube_config_raw
   sensitive = true
 }
 
 output "host" {
-  value = azurerm_kubernetes_cluster.aks_demo.kube_config.0.host
+  value     = azurerm_kubernetes_cluster.aks_demo.kube_config.0.host
   sensitive = true
 }
 
