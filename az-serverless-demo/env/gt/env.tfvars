@@ -12,8 +12,16 @@ subnet_names       = ["snet-its-sls-dev-wu-1", "snet-its-sls-dev-wu-2", "snet-it
 # App Service Configs
 app_service_plan_name     = "its-sls-dev-wu-asp-1"
 app_service_name          = "its-sls-dev-wu-as-1"
-app_service_plan_kind     = "Linux"
-app_service_plan_reserved = true
 app_service_plan_sku_name = "P1v2"
 linux_fx_version          = "PYTHON|3.9"
 app_service_always_on     = true
+
+frontwebapp_name              = "auto-auth-front-prod"
+backwebapp_name               = "auto-auth-back-prod"
+private_endpoint_name         = "auto-auth-private-endpoint-prod"
+dns_private_zone_name         = "privatelink.azurewebsites.net"
+private_dns_zone_link_name    = "auto-auth-dns-zone-link-prod"
+vnet_integration_subnet_name  = "auto-auth-vnet-integration-subnet-prod"
+endpoint_subnet_name          = "auto-auth-endpoint-subnet-prod"
+endpoint_subnet_prefix        = "10.0.1.0/24"
+integration_subnet_prefix     = "10.0.2.0/24"

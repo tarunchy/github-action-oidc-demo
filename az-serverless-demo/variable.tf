@@ -53,3 +53,40 @@ variable "app_service_always_on" {
   type        = bool
 }
 
+variable "frontwebapp_name" {
+  description = "The name of the Frontend Web App."
+}
+
+variable "backwebapp_name" {
+  description = "The name of the Backend Web App."
+}
+
+variable "private_endpoint_name" {
+  description = "The name of the private endpoint."
+}
+
+variable "dns_private_zone_name" {
+  description = "The name of the DNS private zone."
+}
+
+variable "private_dns_zone_link_name" {
+  description = "The name of the DNS zone link."
+}
+
+variable "vnet_integration_subnet_name" {
+  description = "The name of the integration subnet."
+}
+
+variable "endpoint_subnet_name" {
+  description = "The name of the endpoint subnet."
+}
+
+variable "endpoint_subnet_prefix" {
+  description = "The address prefix to use for the endpoint subnet."
+}
+
+variable "integration_subnet_prefix" {
+  description = "The address prefix to use for the integration subnet."
+}
+
+
