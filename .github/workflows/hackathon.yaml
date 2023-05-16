@@ -50,14 +50,14 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
-        slot-name: 'development'
+        slot-name: 'development-backwebapp-slot'
         package: './az-serverless-backend-app'
 
     - name: Deploy frontend to App Service
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
-        slot-name: 'development'
+        slot-name: 'development-frontwebapp-slot'
         package: './az-serverless-frontend-app'
  
   
