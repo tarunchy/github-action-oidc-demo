@@ -21,4 +21,3 @@ backwebapp_name            = "cs-hack-back-dev"
 private_endpoint_name      = "cs-hack-private-endpoint-dev"
 dns_private_zone_name      = "privatelink.azurewebsites.net"
 private_dns_zone_link_name = "cs-hack-dns-zone-link-dev"
-
