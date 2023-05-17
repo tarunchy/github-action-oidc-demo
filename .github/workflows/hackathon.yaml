@@ -63,7 +63,7 @@ jobs:
         package: './az-serverless-frontend-app'
     
     
-    build_and_deploy_backend_app:
+  build_and_deploy_backend_app:
     name: 'Build and Deploy Backend App'
     if: github.event.inputs.actionType == 'Build and Deploy Backend App'
     env:
