@@ -18,9 +18,13 @@ resource "azurerm_linux_web_app" "frontwebapp" {
   app_settings = {
     "WEBSITE_DNS_SERVER" : "168.63.129.16",
     "WEBSITE_VNET_ROUTE_ALL" : "1",
-    "WEBSITE_RUN_FROM_PACKAGE" : "1",
-    "linuxFxVersion" : var.app_tech_stack
+    "WEBSITE_RUN_FROM_PACKAGE" : "1"
+  }
 
+  application_stack {
+    python_version = "3.8"
+    handler_name   = "app.py"
+    entry_point    = "app.py"
   }
 }
 
@@ -40,8 +44,13 @@ resource "azurerm_linux_web_app" "backwebapp" {
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" : "1",
-    "linuxFxVersion" : var.app_tech_stack
+    "WEBSITE_RUN_FROM_PACKAGE" : "1"
+  }
+
+  application_stack {
+    python_version = "3.8"
+    handler_name   = "app.py"
+    entry_point    = "app.py"
   }
 }
 
