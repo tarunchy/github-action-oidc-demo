@@ -96,9 +96,9 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
         package: './az-serverless-backend-app'
     
-    - name: Copy Log Files
+    - name: Download Log Files
       run: |
-        az webapp log --resource-group rg-its-sls-dev-wu-3 --name csapi-app-2 > ~/app2.log
+        az webapp log download --name csapi-app-2 --resource-group rg-its-sls-dev-wu-3 --log-file=~/app2_log/webapp_logs.zip
  
   
   terraformDestroy:
