@@ -5,14 +5,17 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-      $("#prompt-form").submit(function(e) {
-          e.preventDefault();
-          $.post("/prompt", $(this).serialize())
-              .done(function(data) {
-                  $("#response").text(data.response);
-              });
+      $(document).ready(function(){
+        $("#prompt-form").submit(function(e) {
+            e.preventDefault();
+            $.post("/prompt", $(this).serialize())
+                .done(function(data) {
+                    $("#response").text(data.response);
+                });
+        });
       });
-  </script>
+    </script>
+    
 
 
 </head>

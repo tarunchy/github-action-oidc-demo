@@ -30,7 +30,7 @@ def login():
 @app.route('/prompt', methods=['POST'])
 def generate():
     try:
-        return jsonify({'response': 'I am from Backend'})
+        return jsonify({'response': 'I am from frontend'})
     except Exception as e:
         print(e)
         return str(e), 500
