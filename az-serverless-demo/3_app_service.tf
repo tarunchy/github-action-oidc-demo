@@ -1,3 +1,62 @@
+resource "azurerm_key_vault" "example" {
+  name                       = var.key_vault_name
+  location                   = azurerm_resource_group.rg.location
+  resource_group_name        = azurerm_resource_group.rg.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = false
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "get",
+      "create",
+      "delete",
+      "list",
+      "update",
+      "import",
+      "backup",
+      "restore",
+      "recover"
+    ]
+
+    secret_permissions = [
+      "get",
+      "list",
+      "set",
+      "delete",
+      "backup",
+      "restore",
+      "recover"
+    ]
+
+    certificate_permissions = [
+      "get",
+      "list",
+      "delete",
+      "create",
+      "import",
+      "update",
+      "managecontacts",
+      "manageissuers",
+      "getissuers",
+      "listissuers",
+      "setissuers",
+      "deleteissuers",
+      "backup",
+      "restore",
+      "recover"
+    ]
+  }
+
+}
+
+data "azurerm_client_config" "current" {}
+
+
 resource "azurerm_service_plan" "appserviceplan" {
   name                = "appserviceplan"
   location            = azurerm_resource_group.rg.location
