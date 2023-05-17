@@ -12,6 +12,18 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet_prefixes[count.index]]
+
+  dynamic "delegation" {
+    for_each = count.index == 1 ? [1] : []
+    content {
+      name = "webapp"
+
+      service_delegation {
+        name    = "Microsoft.Web/serverFarms"
+        actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      }
+    }
+  }
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -63,28 +75,4 @@ resource "azurerm_subnet_network_security_group_association" "nsg_association" {
   count                     = length(var.subnet_names)
   subnet_id                 = azurerm_subnet.subnet[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg[count.index].id
-}
-
-resource "azurerm_subnet" "endpoint_subnet" {
-  name                 = var.subnet_names[0]
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = [var.subnet_prefixes[0]]
-  
-}
-
-resource "azurerm_subnet" "vnet_integration_subnet" {
-  name                 = var.subnet_names[1]
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = [var.subnet_prefixes[1]]
-
-  delegation {
-    name = "webapp"
-
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
 }
