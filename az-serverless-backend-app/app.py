@@ -1,6 +1,11 @@
 from flask import Flask, request
 app = Flask(__name__)
 
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/api/process', methods=['POST'])
 def process_text():
     data = request.json

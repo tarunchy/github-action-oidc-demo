@@ -10,7 +10,8 @@ on:
         - Hackathon Infrastructure - Plan
         - Hackathon Infrastructure - Apply
         - Hackathon Infrastructure - Destroy
-        - Build and Deploy App
+        - Build and Deploy Frontend App
+        - Build and Deploy Backend App
 
 permissions:
       id-token: write
@@ -24,9 +25,9 @@ env:
 
 jobs:
 
-  build_and_deploy:
-    name: 'Build and Deploy App'
-    if: github.event.inputs.actionType == 'Build and Deploy App'
+  build_and_deploy_frontend_app:
+    name: 'Build and Deploy Frontend App'
+    if: github.event.inputs.actionType == 'Build and Deploy Frontend App'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -60,6 +61,28 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
         package: './az-serverless-frontend-app'
+    
+    
+    build_and_deploy_backend_app:
+    name: 'Build and Deploy Backend App'
+    if: github.event.inputs.actionType == 'Build and Deploy Backend App'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    runs-on: ubuntu-latest
+    environment: cs-hackathon
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Deploy backend to App Service
       uses: azure/webapps-deploy@v2
