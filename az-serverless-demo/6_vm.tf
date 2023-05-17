@@ -1,9 +1,22 @@
+resource "null_resource" "ssh_keygen" {
+  provisioner "local-exec" {
+    command = <<EOF
+    ssh-keygen -t rsa -b 4096 -f ${var.ssh_key_path} -N ""
+    EOF
+  }
+}
+
+
+variable "ssh_key_path" {
+  description = "The path where the SSH key files will be created"
+  default     = "~/.ssh/id_rsa_terraform"
+}
 
 resource "azurerm_linux_virtual_machine" "vm" {
   name                            = "vm"
   location                        = var.resource_group_location
   resource_group_name             = var.resource_group_name
-  network_interface_id            = azurerm_network_interface.nic.id
+  network_interface_ids           = [azurerm_network_interface.nic.id]
   size                            = "Standard_B2s"
   computer_name                   = "vm"
   admin_username                  = "adminuser"
@@ -11,12 +24,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("${var.ssh_key_path}.pub")
   }
 
   os_disk {
-    name              = "osdisk"
-    caching           = "ReadWrite"
+    name                 = "osdisk"
+    caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
@@ -26,16 +39,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "16.04-LTS"
     version   = "latest"
   }
-}
 
-resource "azurerm_network_interface" "nic" {
-  name                = "nic"
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-
-  ip_configuration {
-    name                          = "ipconfig"
-    subnet_id                     = azurerm_subnet.vmsubnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
+  depends_on = [null_resource.ssh_keygen]
 }
