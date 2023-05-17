@@ -1,6 +1,6 @@
 <!doctype html>
 <head>
-    <title>Login Page</title>
+    <title>Backend App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
@@ -8,24 +8,9 @@
    <body>
      <main>
         <div class="px-4 py-3 my-2 text-center">
-            <h1 class="display-6 fw-bold text-primary">Welcome to AI Enabled Autho Auth App</h1>
-            <h2 class="display-6 fw-bold text-primary">Please Login</h2>
+            <h1 class="display-6 fw-bold text-primary">Welcome to Backend App</h1>
+            <h2 class="display-6 fw-bold text-primary">Its Private</h2>
         </div>
-        <form method="post" action="{{url_for('login')}}">
-            <div class="col-md-6 mx-auto text-center">
-                <label for="username" class="form-label fw-bold fs-5">Username</label>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-                    <input type="text" class="form-control" id="username" name="username" style="max-width: 256px;">
-                </div>
-                <label for="password" class="form-label fw-bold fs-5">Password</label>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-                    <input type="password" class="form-control" id="password" name="password" style="max-width: 256px;">
-                </div>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Login</button>
-                </div>
-            </div>
-        </form>
      </main>      
    </body>
 </html>
