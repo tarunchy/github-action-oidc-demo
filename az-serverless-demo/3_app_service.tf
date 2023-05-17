@@ -103,6 +103,11 @@ resource "azurerm_linux_web_app" "frontwebapp" {
     }
 
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
   app_settings = {
     "WEBSITE_DNS_SERVER" : "168.63.129.16",
     "WEBSITE_VNET_ROUTE_ALL" : "1",
@@ -130,6 +135,11 @@ resource "azurerm_linux_web_app" "backwebapp" {
     }
 
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" : "1"
