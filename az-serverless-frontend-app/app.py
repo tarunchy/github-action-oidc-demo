@@ -30,7 +30,7 @@ def login():
 def prompt():
     backend_url = 'https://csapi-app-2.azurewebsites.net'
     prompt = request.form.get('prompt')
-    response = requests.post(f'{backend_url}/generate', json={'prompt': prompt})
+    response = requests.post(f'{backend_url}/prompt', json={'prompt': prompt})
     return jsonify(response.json())
 
 
