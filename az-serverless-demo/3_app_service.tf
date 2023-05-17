@@ -14,18 +14,18 @@ resource "azurerm_linux_web_app" "frontwebapp" {
 
   site_config {
 
+    application_stack {
+      python_version = "3.11"
+    }
+
   }
   app_settings = {
     "WEBSITE_DNS_SERVER" : "168.63.129.16",
     "WEBSITE_VNET_ROUTE_ALL" : "1",
-    "WEBSITE_RUN_FROM_PACKAGE" : "1"
+    "WEBSITE_RUN_FROM_PACKAGE" : "1",
   }
 
-  application_stack {
-    python_version = "3.8"
-    handler_name   = "app.py"
-    entry_point    = "app.py"
-  }
+
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "vnetintegrationconnection" {
@@ -41,16 +41,16 @@ resource "azurerm_linux_web_app" "backwebapp" {
 
   site_config {
 
+    application_stack {
+      python_version = "3.11"
+    }
+
   }
 
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" : "1"
   }
 
-  application_stack {
-    python_version = "3.8"
-    handler_name   = "app.py"
-    entry_point    = "app.py"
-  }
+
 }
 
