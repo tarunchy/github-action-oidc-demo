@@ -45,10 +45,10 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    - name: Setup Python 3.11.0
+    - name: Setup Python 3.8.3
       uses: actions/setup-python@v2
       with:
-        python-version: 3.11.0
+        python-version: 3.8.3
     
     - name: Install dependencies
       run: |
