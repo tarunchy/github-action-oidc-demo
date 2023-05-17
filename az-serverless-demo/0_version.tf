@@ -1,7 +1,7 @@
 terraform {
 
   backend "local" {
-    path = "/tmp/terraform_state/az_gt_serverless.tfstate"
+    path = "/tmp/terraform_state/az_gt_serverless-v2.tfstate"
   }
 
   required_version = ">=0.12"

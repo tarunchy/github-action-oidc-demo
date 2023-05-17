@@ -50,14 +50,14 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
-        slot-name: 'development-frontwebapp-slot'
+        slot-name: 'csweb-app-1'
         package: './az-serverless-frontend-app'
     
     - name: Deploy backend to App Service
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
-        slot-name: 'development-backwebapp-slot'
+        slot-name: 'csapi-app-2'
         package: './az-serverless-backend-app'
  
   
@@ -105,7 +105,7 @@ jobs:
         run: infracost breakdown --path .
       
       - name: Terraform Destroy
-        run: terraform destroy -var-file="./env/gt/env.tfvars" --auto-approve
+        run: terraform destroy -var-file="./env/dev/env.tfvars" --auto-approve
 
   CreateResourceGroupPlan:
     name: 'Hackathon Infrastructure - Plan'
@@ -148,7 +148,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=deploy.tfplan -var-file="./env/gt/env.tfvars"
+        run: terraform plan -out=deploy.tfplan -var-file="./env/dev/env.tfvars"
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
@@ -200,7 +200,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=deploy.tfplan -var-file="./env/gt/env.tfvars"
+        run: terraform plan -out=deploy.tfplan -var-file="./env/dev/env.tfvars"
       
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline

@@ -7,8 +7,8 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "integrationsubnet" {
-  name                 = var.subnet_names[0]
-  resource_group_name  = var.resource_group_name
+  name                 = "integrationsubnet"
+  resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet_prefixes[0]]
   delegation {
@@ -20,8 +20,8 @@ resource "azurerm_subnet" "integrationsubnet" {
 }
 
 resource "azurerm_subnet" "endpointsubnet" {
-  name                                      = var.subnet_names[1]
-  resource_group_name                       = var.resource_group_name
+  name                                      = "endpointsubnet"
+  resource_group_name                       = azurerm_resource_group.rg.name
   virtual_network_name                      = azurerm_virtual_network.vnet.name
   address_prefixes                          = [var.subnet_prefixes[1]]
   private_endpoint_network_policies_enabled = true

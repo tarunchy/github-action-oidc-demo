@@ -21,3 +21,4 @@ variable "backwebapp_name" {}
 variable "private_endpoint_name" {}
 variable "dns_private_zone_name" {}
 variable "private_dns_zone_link_name" {}
+variable "app_tech_stack" {}
