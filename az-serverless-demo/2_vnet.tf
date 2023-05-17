@@ -20,9 +20,9 @@ resource "azurerm_subnet" "integrationsubnet" {
 }
 
 resource "azurerm_subnet" "endpointsubnet" {
-  name                 = var.subnet_names[1]
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = [var.subnet_prefixes[1]]
+  name                                      = var.subnet_names[1]
+  resource_group_name                       = var.resource_group_name
+  virtual_network_name                      = azurerm_virtual_network.vnet.name
+  address_prefixes                          = [var.subnet_prefixes[1]]
   private_endpoint_network_policies_enabled = true
 }

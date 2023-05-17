@@ -9,7 +9,7 @@ subnet_prefixes    = ["10.0.0.0/29", "10.0.0.8/29"]
 vnet_name          = "vnet-its-sls-dev-wu-1"
 subnet_names       = ["snet-its-sls-dev-wu-1", "snet-its-sls-dev-wu-2"]
 
-app_service_plan_name = "its-sls-dev-wu-asp-1"
+app_service_plan_name     = "its-sls-dev-wu-asp-1"
 app_service_plan_sku_name = "P1v2"
 app_service_always_on     = true
 
