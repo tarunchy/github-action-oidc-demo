@@ -31,10 +31,11 @@ resource "azurerm_linux_web_app" "frontwebapp" {
   tags = var.tags
 }
 
-resource "azurerm_app_service_virtual_network_swift_connection" "vnetintegrationconnection" {
+resource "azurerm_app_service_virtual_network_swift_connection" "frontwebapp_vnet_connection" {
   app_service_id = azurerm_linux_web_app.frontwebapp.id
-  subnet_id      = azurerm_subnet.vnet_integration_subnet.id
+  subnet_id      = azurerm_subnet.subnet[0].id
 }
+
 
 resource "azurerm_linux_web_app" "backwebapp" {
   name                = var.backwebapp_name
@@ -57,3 +58,7 @@ resource "azurerm_linux_web_app" "backwebapp" {
   tags = var.tags
 }
 
+resource "azurerm_app_service_virtual_network_swift_connection" "backwebapp_vnet_connection" {
+  app_service_id = azurerm_linux_web_app.backwebapp.id
+  subnet_id      = azurerm_subnet.subnet[1].id
+}
