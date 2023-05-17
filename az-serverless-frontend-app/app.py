@@ -1,12 +1,7 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
-import requests
-from flask import jsonify
-from flask_cors import CORS
 
 app = Flask(__name__)
-
-
 app.secret_key = 'your secret key'
 
 @app.route('/')
@@ -29,26 +24,6 @@ def login():
         return redirect(url_for('home'))
     else:
         return redirect(url_for('index'))
-
-@app.route('/prompt', methods=['POST'])
-def prompt():
-    backend_url = 'https://csapi-app-2.azurewebsites.net'
-    prompt = request.form.get('prompt')
-
-    # Exception handling and logging
-    try:
-        response = requests.post(f'{backend_url}/generate', json={'prompt': prompt})
-        response.raise_for_status()  # Raises stored HTTPError, if one occurred.
-    except requests.exceptions.HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')  # Python 3.6
-        return 'An error occurred: {}'.format(http_err)
-    except Exception as err:
-        print(f'Other error occurred: {err}')  # Python 3.6
-        return 'An error occurred: {}'.format(err)
-    else:
-        print('Success!')
-    return jsonify(response.json())
-
 
 @app.route('/home')
 def home():
