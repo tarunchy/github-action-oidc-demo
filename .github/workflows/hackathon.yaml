@@ -45,7 +45,7 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-   - name: Set up Python 3.x
+    - name: Setup Python 3.x
       uses: actions/setup-python@v2
       with:
         python-version: 3.x
