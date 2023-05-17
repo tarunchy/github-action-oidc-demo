@@ -1,6 +1,7 @@
-Flask==2.0.2
+flask==1.1.2
 gunicorn
 requests
-openai
+
+
 
 

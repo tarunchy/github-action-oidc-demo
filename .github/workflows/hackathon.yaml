@@ -12,7 +12,6 @@ on:
         - Hackathon Infrastructure - Destroy
         - Build and Deploy Frontend App
         - Build and Deploy Backend App
-        - Build and Deploy both App
 
 permissions:
       id-token: write
@@ -25,54 +24,6 @@ env:
 
 
 jobs:
-
-  build_and_deploy_both_app:
-    name: 'Build and Deploy both App'
-    if: github.event.inputs.actionType == 'Build and Deploy both App'
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-    runs-on: ubuntu-latest
-    environment: cs-hackathon
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    
-    - name: Setup Python 3.x
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Deploy frontend to App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
-        package: './az-serverless-frontend-app'
-    
-    - name: Deploy backend to App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
-        package: './az-serverless-backend-app'
-    
-    - name: Download Log Files
-      run: |
-        az webapp log download --name csapi-app-2 --resource-group rg-its-sls-dev-wu-3 --log-file=~/app2_log/webapp_logs.zip
- 
 
   build_and_deploy_frontend_app:
     name: 'Build and Deploy Frontend App'
@@ -110,6 +61,11 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONT }}
         package: './az-serverless-frontend-app'
+    
+    - name: Download Log Files
+      run: |
+        az webapp log download --name csweb-app-1 --resource-group rg-its-sls-dev-wu-3 --log-file=~/app1_log/webapp_logs.zip
+ 
     
     
   build_and_deploy_backend_app:

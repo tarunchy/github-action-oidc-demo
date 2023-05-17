@@ -1,6 +1,6 @@
 import os
-from flask import (Flask, redirect, render_template, request, jsonify, send_from_directory, url_for, session)
-import openai
+from flask import (Flask, render_template, request, jsonify, send_from_directory, url_for, session)
+
 
 
 app = Flask(__name__)
@@ -12,13 +12,8 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    prompt = request.json.get('prompt')
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=60
-    )
-    return jsonify({'response': response.choices[0].text.strip()})
+  
+    return jsonify({'response': 'Working Buddy'})
 
 
 if __name__ == '__main__':
