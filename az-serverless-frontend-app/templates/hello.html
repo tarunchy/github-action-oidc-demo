@@ -3,6 +3,18 @@
     <title>Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $("#prompt-form").submit(function(e) {
+          e.preventDefault();
+          $.post("/prompt", $(this).serialize())
+              .done(function(data) {
+                  $("#response").text(data.response);
+              });
+      });
+  </script>
+
+
 </head>
 <html>
    <body>
@@ -10,17 +22,22 @@
         <div class="px-4 py-3 my-2 text-center">
             <h1 class="display-6 fw-bold">Welcome, {{username}}</h1>
         </div>
-        <form method="post" action="{{url_for('upload')}}" enctype="multipart/form-data">
+        <form method="post" id="prompt-form">
             <div class="col-md-6 mx-auto text-center">
-                <label for="file" class="form-label fw-bold fs-5">Upload Document</label>
+                <label for="file" class="form-label fw-bold fs-5">Enter a prompt:</label>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-                    <input type="file" class="form-control" id="file" name="file" style="max-width: 256px;">
+                    <input type="text" class="form-control" id="prompt" name="prompt" style="max-width: 256px;"><br>
                 </div>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Upload</button>
+                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Submit</button>
                 </div>
             </div>
         </form>
+
+        <div class="px-4 py-3 my-2 text-center">
+          <h1 class="display-6 fw-bold">Generated Text:</h1>
+          <p id="response"></p>
+      </div>
      </main>      
    </body>
 </html>
