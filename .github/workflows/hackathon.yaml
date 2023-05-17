@@ -18,9 +18,8 @@ permissions:
 
 
 env:
-  AZURE_WEBAPP_NAME_FRONT: 'cs-hack-front-dev'
-  AZURE_WEBAPP_NAME_BACK: 'cs-hack-back-dev'
-  PYTHON_VERSION: '3.9'
+  AZURE_WEBAPP_NAME_FRONT: 'csweb-app-1'
+  AZURE_WEBAPP_NAME_BACK: 'csapi-app-2'
 
 
 jobs:
