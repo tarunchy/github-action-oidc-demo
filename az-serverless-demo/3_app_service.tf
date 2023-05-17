@@ -55,7 +55,7 @@ resource "azurerm_key_vault" "dev-key-vault" {
 }
 
 resource "azurerm_key_vault_secret" "dev-key-vault_secret1" {
-  name         = "openai_key"
+  name         = "openai-key"
   value        = "dummy"
   key_vault_id = azurerm_key_vault.dev-key-vault.id
 
@@ -67,7 +67,7 @@ resource "azurerm_key_vault_secret" "dev-key-vault_secret1" {
 }
 
 resource "azurerm_key_vault_secret" "dev-key-vault_secret2" {
-  name         = "openai_url"
+  name         = "openai-url"
   value        = "dummy"
   key_vault_id = azurerm_key_vault.dev-key-vault.id
 
