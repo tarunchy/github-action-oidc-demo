@@ -1,6 +1,7 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
+import requests
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
@@ -30,10 +31,18 @@ def login():
 @app.route('/prompt', methods=['POST'])
 def generate():
     try:
-        return jsonify({'response': 'I am from frontend'})
+        # Get the request data
+        data = request.get_json()
+
+        # Call the API
+        response = requests.post('https://csapi-app-2.azurewebsites.net/prompt', data=data)
+
+        # Return the JSON response
+        return response.json()
     except Exception as e:
         print(e)
         return str(e), 500
+
 
 @app.route('/home')
 def home():
