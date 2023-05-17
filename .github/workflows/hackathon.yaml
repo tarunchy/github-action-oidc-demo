@@ -65,7 +65,7 @@ jobs:
     - name: Download Log Files
       run: |
         pwd
-        az webapp log download --name csweb-app-1 --resource-group rg-its-sls-dev-wu-3 --log-file=/tmp/app1_log/webapp_logs.zip
+        az webapp log download --name csweb-app-1 --resource-group rg-its-sls-dev-wu-3 --log-file=~/app1_log//webapp_logs.zip
  
     
     
