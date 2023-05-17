@@ -53,6 +53,32 @@ resource "azurerm_key_vault" "dev-key-vault" {
   }
 
 
+  resource "azurerm_key_vault_secret" "dev-key-vault_secret1" {
+    name         = "openai_key"
+    value        = "dummy"
+    key_vault_id = azurerm_key_vault.dev-key-vault.id
+
+    lifecycle {
+      ignore_changes = [
+        value,
+      ]
+    }
+  }
+
+  resource "azurerm_key_vault_secret" "dev-key-vault_secret2" {
+    name         = "openai_url"
+    value        = "dummy"
+    key_vault_id = azurerm_key_vault.dev-key-vault.id
+
+    lifecycle {
+      ignore_changes = [
+        value,
+      ]
+    }
+  }
+
+
+
 
 
 }
@@ -110,7 +136,9 @@ resource "azurerm_linux_web_app" "backwebapp" {
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" : "1"
+    "WEBSITE_RUN_FROM_PACKAGE" : "1",
+    "AZURE_OPENAI_KEY" : "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.dev-key-vault.name};SecretName=openai_key)",
+    "AZURE_OPENAI_ENDPOINT" : "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.dev-key-vault.name};SecretName=openai_url)"
   }
 
 
