@@ -1,5 +1,6 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
+from flask import jsonify
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
@@ -27,12 +28,12 @@ def login():
 
 
 @app.route('/prompt', methods=['POST'])
-def prompt():
-    backend_url = 'https://csapi-app-2.azurewebsites.net'
-    prompt = request.form.get('prompt')
-    response = requests.post(f'{backend_url}/prompt', json={'prompt': prompt})
-    return jsonify(response.json())
-
+def generate():
+    try:
+        return jsonify({'response': 'I am from Backend'})
+    except Exception as e:
+        print(e)
+        return str(e), 500
 
 @app.route('/home')
 def home():
