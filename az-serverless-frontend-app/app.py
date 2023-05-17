@@ -25,6 +25,13 @@ def login():
     else:
         return redirect(url_for('index'))
 
+@app.route('/prompt', methods=['POST'])
+def prompt():
+    backend_url = 'csapi-app-2.azurewebsites.net'
+    prompt = request.form.get('prompt')
+    response = requests.post(f'{backend_url}/generate', json={'prompt': prompt})
+    return jsonify(response.json())
+
 @app.route('/home')
 def home():
     if 'username' in session:

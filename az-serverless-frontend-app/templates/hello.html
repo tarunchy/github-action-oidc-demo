@@ -1,26 +1,29 @@
 <!doctype html>
-<head>
-    <title>Home Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-</head>
 <html>
-   <body>
-     <main>
-        <div class="px-4 py-3 my-2 text-center">
-            <h1 class="display-6 fw-bold">Welcome, {{username}}</h1>
-        </div>
-        <form method="post" action="{{url_for('upload')}}" enctype="multipart/form-data">
-            <div class="col-md-6 mx-auto text-center">
-                <label for="file" class="form-label fw-bold fs-5">Upload Document</label>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-                    <input type="file" class="form-control" id="file" name="file" style="max-width: 256px;">
-                </div>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Upload</button>
-                </div>
-            </div>
-        </form>
-     </main>      
-   </body>
+<head>
+    <title>Frontend App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to Frontend App</h1>
+
+    <form id="prompt-form">
+        <label for="prompt">Enter a prompt:</label><br>
+        <input type="text" id="prompt" name="prompt"><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Generated Text:</h2>
+    <p id="response"></p>
+
+    <script>
+        $("#prompt-form").submit(function(e) {
+            e.preventDefault();
+            $.post("/prompt", $(this).serialize())
+                .done(function(data) {
+                    $("#response").text(data.response);
+                });
+        });
+    </script>
+</body>
 </html>
