@@ -1,12 +1,3 @@
-resource "null_resource" "ssh_keygen" {
-  provisioner "local-exec" {
-    command = <<EOF
-    ssh-keygen -t rsa -b 4096 -f ${var.ssh_key_path} -N ""
-    EOF
-  }
-}
-
-
 variable "ssh_key_path" {
   description = "The path where the SSH key files will be created"
   default     = "~/.ssh/id_rsa_terraform"
@@ -39,6 +30,4 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "16.04-LTS"
     version   = "latest"
   }
-
-  depends_on = [null_resource.ssh_keygen]
 }
