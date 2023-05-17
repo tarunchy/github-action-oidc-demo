@@ -1,4 +1,4 @@
-resource "azurerm_key_vault" "example" {
+resource "azurerm_key_vault" "dev-key-vault" {
   name                       = var.key_vault_name
   location                   = azurerm_resource_group.rg.location
   resource_group_name        = azurerm_resource_group.rg.name
@@ -51,6 +51,8 @@ resource "azurerm_key_vault" "example" {
       "recover"
     ]
   }
+
+
 
 }
 
