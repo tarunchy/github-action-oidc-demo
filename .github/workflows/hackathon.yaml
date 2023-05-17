@@ -12,6 +12,7 @@ on:
         - Hackathon Infrastructure - Destroy
         - Build and Deploy Frontend App
         - Build and Deploy Backend App
+        - Build and Deploy both App
 
 permissions:
       id-token: write
@@ -67,6 +68,11 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_BACK }}
         package: './az-serverless-backend-app'
+    
+    - name: Download Log Files
+      run: |
+        az webapp log download --name csapi-app-2 --resource-group rg-its-sls-dev-wu-3 --log-file=~/app2_log/webapp_logs.zip
+ 
 
   build_and_deploy_frontend_app:
     name: 'Build and Deploy Frontend App'
