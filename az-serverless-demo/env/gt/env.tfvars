@@ -1,4 +1,4 @@
-resource_group_name     = "rg-its-sls-dev-wu-1"
+resource_group_name     = "rg-its-sls-dev-wu-2"
 resource_group_location = "westus"
 tags = {
   "cost_center" = "1234H"
@@ -21,5 +21,3 @@ backwebapp_name            = "cs-hack-back-dev"
 private_endpoint_name      = "cs-hack-private-endpoint-dev"
 dns_private_zone_name      = "privatelink.azurewebsites.net"
 private_dns_zone_link_name = "cs-hack-dns-zone-link-dev"
-
-slot_name = "development"
