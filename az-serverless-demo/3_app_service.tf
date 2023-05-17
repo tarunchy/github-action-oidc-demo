@@ -15,7 +15,7 @@ resource "azurerm_linux_web_app" "frontwebapp" {
   site_config {
 
     application_stack {
-      python_version = "3.11"
+      python_version = "3.9"
     }
 
   }
@@ -42,7 +42,7 @@ resource "azurerm_linux_web_app" "backwebapp" {
   site_config {
 
     application_stack {
-      python_version = "3.11"
+      python_version = "3.9"
     }
 
   }
