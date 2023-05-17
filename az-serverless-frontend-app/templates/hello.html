@@ -1,6 +1,6 @@
 <!doctype html>
 <head>
-    <title>Hello Azure - Python Quickstart</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
@@ -8,14 +8,19 @@
    <body>
      <main>
         <div class="px-4 py-3 my-2 text-center">
-            <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/azure-icon.svg') }}" alt="Azure Logo" width="192" height="192"/>
-            <!-- <img  src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-            <h1 class="display-6 fw-bold">Hello {{name}}</h1>
-            <p class="fs-5">
-                It is nice to meet you!
-            </p>
-            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
-          </div>
+            <h1 class="display-6 fw-bold">Welcome, {{username}}</h1>
+        </div>
+        <form method="post" action="{{url_for('upload')}}" enctype="multipart/form-data">
+            <div class="col-md-6 mx-auto text-center">
+                <label for="file" class="form-label fw-bold fs-5">Upload Document</label>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+                    <input type="file" class="form-control" id="file" name="file" style="max-width: 256px;">
+                </div>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+                  <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Upload</button>
+                </div>
+            </div>
+        </form>
      </main>      
    </body>
 </html>
