@@ -29,8 +29,6 @@ variable "subnet_names" {
   type        = list(string)
 }
 
-
-
 variable "app_service_plan_name" {
   description = "The name of the App Service Plan."
 }
@@ -69,10 +67,7 @@ variable "private_dns_zone_link_name" {
   description = "The name of the DNS zone link."
 }
 
-variable "slot_name" {
-  description = "The name of the slot."
-  type        = string
-}
+
 
 
 
