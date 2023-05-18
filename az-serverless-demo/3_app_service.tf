@@ -18,7 +18,7 @@ resource "azurerm_linux_web_app" "frontwebapp" {
       python_version = "3.9"
     }
 
-    
+
 
   }
 
@@ -54,7 +54,12 @@ resource "azurerm_linux_web_app" "backwebapp" {
       python_version = "3.9"
     }
 
-    
+    cors {
+      allowed_origins     = ["*"]
+      support_credentials = false
+    }
+
+
 
   }
 
