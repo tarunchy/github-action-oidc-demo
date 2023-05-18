@@ -1,7 +1,7 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
-import requests
+import libs.requests
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
@@ -35,7 +35,7 @@ def generate():
         data = request.get_json()
 
         # Call the API
-        response = requests.post('https://csapi-app-2.azurewebsites.net/prompt', data=data)
+        response = libs.requests.post('https://csapi-app-2.azurewebsites.net/prompt', data=data)
 
         # Return the JSON response
         return response.json()
