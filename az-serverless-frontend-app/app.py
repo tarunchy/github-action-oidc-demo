@@ -6,26 +6,66 @@ from flask import (Flask, redirect, render_template, request,
 app = Flask(__name__)
 
 
+# Load the usernames and passwords from a JSON file
+with open('users.json', 'r') as f:
+    users = json.load(f)
+
 @app.route('/')
-def index():
-   print('Request for index page received')
-   return render_template('index.html')
+def home():
+    if 'username' in session:
+        return render_template('home.html')
+    else:
+        return redirect(url_for('login'))
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'username' in session:
+        return redirect(url_for('home'))
 
-@app.route('/hello', methods=['POST'])
-def hello():
-   name = request.form.get('name')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if username in users and users[username] == password:
+            session['username'] = username
+            return redirect(url_for('home'))
+        else:
+            return 'Invalid username or password'
+    else:
+        return render_template('login.html')
 
-   if name:
-       print('Request for hello page received with name=%s' % name)
-       return render_template('hello.html', name = name)
-   else:
-       print('Request for hello page received with no name or blank name -- redirecting')
-       return redirect(url_for('index'))
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
+
+@app.route('/process_files', methods=['POST'])
+def process_files():
+    if not ('image_file' in request.files and 'text_input' in request.form and 'pdf_file' in request.files):
+        return jsonify({'error': 'Missing files or text'}), 400
+
+    # Get the uploaded files and text
+    image_file = request.files['image_file']
+    text_input = request.form['text_input']
+    pdf_file = request.files['pdf_file']
+
+    # TODO: Add the code to process the image file and get the image summary
+    # For now, let's just use a dummy summary
+    image_summary = "This is a dummy image summary."
+
+    # TODO: Add the code to process the text input and get the text summary
+    # For now, let's just use a dummy summary
+    text_summary = "This is a dummy text summary."
+
+    # TODO: Add the code to process the pdf file and get the pdf summary
+    # For now, let's just use a dummy summary
+    pdf_summary = "This is a dummy pdf summary."
+
+    # Combine all summaries
+    summary = f"Image Summary: {image_summary} | Clinical Note Summary: {text_summary} | Other Doc Summary: {pdf_summary}"
+
+    # Return the combined summary as the result
+    return jsonify({'summary': summary}), 200
 
 
 if __name__ == '__main__':

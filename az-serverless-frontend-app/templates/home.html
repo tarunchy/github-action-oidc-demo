@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f3e5f5;  /* a light shade of purple */
+        }
+        .container {
+            max-width: 90%;  /* increase container width */
+        }
+        .form-check-label {
+            display: block;  /* make checkboxes line up with input fields */
+        }
+        .form-check-input {
+            margin-top: 0.7rem;  /* adjust checkbox position for alignment */
+        }
+        h1 {
+            text-align: center;  /* center title */
+            padding: 20px;  /* add some space around title */
+            color: #6a1b9a;  /* a shade of purple to match the theme */
+            border-bottom: 1px solid #6a1b9a;  /* add underline */
+        }
+        .btn-danger {
+            position: absolute;  /* position logout button */
+            top: 20px;
+            right: 20px;
+        }
+        .form-control-file {
+            border: 1px solid #6a1b9a;  /* add border to match the theme */
+            padding: 5px;
+        }
+    </style>
+
+<script>
+    $(document).ready(function () {
+        $('#upload-form').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '/process_files',  // replace with the correct URL if needed
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData:false,
+                success: function(response) { 
+                    var summaries = response.summary.split('|');
+                    $('#image-summary').text(summaries[0]);  // update the image summary
+                    $('#text-summary').text(summaries[1]);  // update the text summary
+                    $('#pdf-summary').text(summaries[2]);  // update the pdf summary
+                },
+                error: function(response) {
+                    $('#image-summary').text('An error occurred. Please try again.');  // handle any errors
+                    $('#text-summary').text('An error occurred. Please try again.');  // handle any errors
+                    $('#pdf-summary').text('An error occurred. Please try again.');  // handle any errors
+                },
+            });
+        });
+    });
+</script>
+
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Welcome to the Document Summarization Application</h1>
+        <form method="POST" action="{{ url_for('logout') }}" class="mt-3">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+
+        <form id="upload-form" action="{{ url_for('process_files') }}" method="post" enctype="multipart/form-data" class="mt-5">
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="image_file_checkbox">
+                <label class="form-check-label" for="image_file_checkbox">
+                    <div class="form-group">
+                        <label for="image_file">Upload Image File:</label><br>
+                        <input type="file" id="image_file" name="image_file" accept="image/*" class="form-control-file">
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="text_input_checkbox">
+                <label class="form-check-label" for="text_input_checkbox">
+                    <div class="form-group">
+                        <label for="text_input">Text Notes:</label><br>
+                        <textarea id="text_input" name="text_input" class="form-control"></textarea>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="pdf_file_checkbox">
+                <label class="form-check-label" for="pdf_file_checkbox">
+                    <div class="form-group">
+                        <label for="pdf_file">Other Documents (PDF):</label><br>
+                        <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" class="form-control-file">
+                    </div>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+
+            <!-- Summary section -->
+            <div class="mt-4" id="summary-section">
+                <h3>Summary:</h3>
+                <div id="summary-content" class="pl-3">
+                    <p class="font-weight-bold">Image Summary:</p>
+                    <p id="image-summary" class="pl-2"></p>
+                    <p class="font-weight-bold mt-3">Clinical Note Summary:</p>
+                    <p id="text-summary" class="pl-2"></p>
+                    <p class="font-weight-bold mt-3">Other Doc Summary:</p>
+                    <p id="pdf-summary" class="pl-2"></p>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
