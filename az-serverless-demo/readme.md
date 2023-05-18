@@ -14,7 +14,7 @@ The Terraform files are organized sequentially:
   location = var.resource_group_location
   tags     = var.tags
 }
-    ```bash
+    ```
 
 2. `2_vnet.tf` - This file sets up the VNET and Subnets with NSG for the application.
 
@@ -158,7 +158,7 @@ resource "azurerm_network_interface" "nic" {
     public_ip_address_id          = azurerm_public_ip.vm_public_ip.id
   }
 }
-    ```bash
+    ```
 
 3. `3_app_service.tf` - This file creates two app service instances. The first one is a front-end app exposed to the internet, and the second one is a backend app which is not exposed to the internet as it contains secrets like OpenAI API keys. The backend app is only accessible via resources in the VNET and private Link.
 
@@ -243,7 +243,7 @@ resource "azurerm_linux_web_app" "backwebapp" {
 
 
 }
-    ```bash
+    ```
 
 4. `4_private_dns.tf` - This file sets up a DNS Zone for the App Service Backend.
 
@@ -259,7 +259,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dnszonelink" {
   private_dns_zone_name = azurerm_private_dns_zone.dnsprivatezone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
 }
-    ```bash
+    ```
 
 5. `5_private_endpoint.tf` - This file creates a private connection for the app service backend.
 
@@ -282,7 +282,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dnszonelink" {
     is_manual_connection           = false
   }
 }
-    ```bash
+    ```
 
 6. `6_vm.tf` - This file creates a VM for the GitHub Action Self-Hosted runner. This is necessary as we need a resource in the same VNET to deploy the app in the backend app service. The backend Python Flask-based API code is deployed using GitHub actions.
 
@@ -320,7 +320,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
-    ```bash
+    ```
 
 In addition to these, there are dedicated files for variables (`variable.tf`), environment-specific variables (`env.tfvars`), and data for non-Terraform managed existing resources (`data.tf`).
 
@@ -351,4 +351,4 @@ dns_private_zone_name      = "privatelink.azurewebsites.net"
 private_dns_zone_link_name = "cs-hack-dns-zone-link-dev"
 app_tech_stack             = "PYTHON|3.11"
 
-```bash
+```
