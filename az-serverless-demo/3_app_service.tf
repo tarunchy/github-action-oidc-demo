@@ -18,6 +18,8 @@ resource "azurerm_linux_web_app" "frontwebapp" {
       python_version = "3.9"
     }
 
+    
+
   }
 
   identity {
@@ -28,7 +30,8 @@ resource "azurerm_linux_web_app" "frontwebapp" {
     "WEBSITE_DNS_SERVER" : "168.63.129.16",
     "WEBSITE_VNET_ROUTE_ALL" : "1",
     "WEBSITE_RUN_FROM_PACKAGE" : "1",
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" : "1"
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" : "1",
+    "WEBSITE_STARTUP_FILE" : "startup.sh"
   }
 
 
@@ -51,6 +54,8 @@ resource "azurerm_linux_web_app" "backwebapp" {
       python_version = "3.9"
     }
 
+    
+
   }
 
   identity {
@@ -62,7 +67,8 @@ resource "azurerm_linux_web_app" "backwebapp" {
     "WEBSITE_RUN_FROM_PACKAGE" : "1",
     "SCM_DO_BUILD_DURING_DEPLOYMENT" : "1",
     "AZURE_OPENAI_KEY" : "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.rg-kv-dev-1.name};SecretName=AZURE-OPENAI-KEY)",
-    "AZURE_OPENAI_ENDPOINT" : "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.rg-kv-dev-1.name};SecretName=AZURE-OPENAI-ENDPOINT)"
+    "AZURE_OPENAI_ENDPOINT" : "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.rg-kv-dev-1.name};SecretName=AZURE-OPENAI-ENDPOINT)",
+    "WEBSITE_STARTUP_FILE" : "startup.sh"
   }
 
 
