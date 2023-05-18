@@ -1,7 +1,15 @@
 import os
+import subprocess
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
+
+# Attempt to install the necessary libraries
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'requests'])
+
 import requests
+
+# rest of your code...
+
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
