@@ -1,9 +1,11 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
+from libs.flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'your secret key'
 
 @app.route('/')
