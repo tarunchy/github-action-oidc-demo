@@ -47,12 +47,12 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+      run: |
+        python -m venv venv
+        source venv/bin/activate
       
     - name: Install dependencies
-        run: pip install -r requirements.txt
+      run: pip install -r requirements.txt
 
 
     - name: Deploy frontend to App Service
@@ -90,12 +90,12 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+      run: |
+        python -m venv venv
+        source venv/bin/activate
       
     - name: Install dependencies
-        run: pip install -r requirements.txt
+      run: pip install -r requirements.txt
     
     - name: Deploy backend to App Service
       uses: azure/webapps-deploy@v2
