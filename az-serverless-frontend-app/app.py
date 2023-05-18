@@ -29,13 +29,13 @@ def login():
 
 
 @app.route('/prompt', methods=['POST'])
-def generate():
+def prompt():
     try:
         # Get the request data
         data = request.get_json()
 
         # Call the API
-        response = libs.requests.post('https://csapi-app-2.azurewebsites.net/prompt', data=data)
+        response = libs.requests.post('https://csapi-app-2.azurewebsites.net/prompt')
 
         # Return the JSON response
         return response.json()
