@@ -18,7 +18,7 @@ resource "azurerm_linux_web_app" "frontwebapp" {
       python_version = "3.9"
     }
 
-    startup_command = "./startup.sh"
+    startup_script = "./startup.sh"
 
   }
 
@@ -52,7 +52,7 @@ resource "azurerm_linux_web_app" "backwebapp" {
       python_version = "3.9"
     }
 
-    startup_command = "./startup.sh"
+    startup_script = "./startup.sh"
 
   }
 
