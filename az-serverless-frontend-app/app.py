@@ -41,7 +41,7 @@ def generate():
         return response.json()
     except Exception as e:
         print(e)
-        return str(e), 500
+        return jsonify({'response': 'I failed in frontend'})
 
 
 @app.route('/home')
