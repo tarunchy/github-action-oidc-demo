@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template, session, redirect, u
 import json
 
 app = Flask(__name__)
-
+app.secret_key = '12345vvdfvsdxvxc'  # Set a secret key for the session
 
 # Load the usernames and passwords from a JSON file
 with open('users.json', 'r') as f:
