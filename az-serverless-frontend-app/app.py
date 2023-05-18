@@ -35,7 +35,7 @@ def prompt():
         data = request.get_json()
 
         # Call the API
-        response = libs.requests.post('https://csapi-app-2.azurewebsites.net/prompt')
+        response = libs.requests.post('https://fhir.top/ui/dcs/resource/guide?searchQuery=member&id=fhir_model_id&scoreDeviation=50&size=10')
 
         # Return the JSON response
         return response.json()
