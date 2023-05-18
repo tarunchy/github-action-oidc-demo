@@ -2,7 +2,6 @@ import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
 
-
 app = Flask(__name__)
 app.secret_key = 'your secret key'
 
