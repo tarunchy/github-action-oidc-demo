@@ -10,11 +10,13 @@
             e.preventDefault();
             $.post("/prompt", $(this).serialize())
                 .done(function(data) {
-                    $("#response").text(data.response);
+                    var output = data.response + (data.error ? " Error: " + data.error : "");
+                    $("#response").text(output);
                 });
         });
       });
     </script>
+    
     
 
 
