@@ -1,7 +1,7 @@
 import os
 from flask import (Flask, redirect, render_template, request, send_from_directory, url_for, session)
 from flask import jsonify
-import libs.requests
+
 
 app = Flask(__name__)
 app.secret_key = 'your secret key'
@@ -35,10 +35,10 @@ def prompt():
         data = request.get_json()
 
         # Call the API
-        response = {'response': 'I am dummy frontend'} #libs.requests.get('https://fhir.top/ui/dcs/resource/guide?searchQuery=member&id=fhir_model_id&scoreDeviation=50&size=10')
+        response = jsonify({'response': 'I failed in frontend'})
 
         # Return the JSON response
-        return response.json()
+        return response
     except Exception as e:
         print(e)
         return jsonify({'response': 'I failed in frontend', 'error': str(e)})
