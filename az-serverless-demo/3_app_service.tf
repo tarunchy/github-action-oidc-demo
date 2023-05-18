@@ -18,6 +18,8 @@ resource "azurerm_linux_web_app" "frontwebapp" {
       python_version = "3.9"
     }
 
+    startup_command = "./startup.sh"
+
   }
 
   identity {
@@ -49,6 +51,8 @@ resource "azurerm_linux_web_app" "backwebapp" {
     application_stack {
       python_version = "3.9"
     }
+
+    startup_command = "./startup.sh"
 
   }
 
