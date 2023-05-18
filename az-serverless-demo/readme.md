@@ -8,17 +8,17 @@ The Terraform files are organized sequentially:
 
 1. 1_rg.tf - This file creates the main Resource Group to which all Azure resources for this application belong.
 
-  `
+  ```
    resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.resource_group_location
   tags     = var.tags
 }
-    `
+    ```
 
 2. 2_vnet.tf - This file sets up the VNET and Subnets with NSG for the application.
 
-    `
+    ```
     resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   address_space       = var.vnet_address_space
@@ -158,11 +158,11 @@ resource "azurerm_network_interface" "nic" {
     public_ip_address_id          = azurerm_public_ip.vm_public_ip.id
   }
 }
-    `
+    ```
 
 3. 3_app_service.tf - This file creates two app service instances. The first one is a front-end app exposed to the internet, and the second one is a backend app which is not exposed to the internet as it contains secrets like OpenAI API keys. The backend app is only accessible via resources in the VNET and private Link.
 
-    `
+    ```
    resource "azurerm_service_plan" "appserviceplan" {
   name                = "appserviceplan"
   location            = azurerm_resource_group.rg.location
@@ -243,11 +243,11 @@ resource "azurerm_linux_web_app" "backwebapp" {
 
 
 }
-    `
+    ```
 
 4. 4_private_dns.tf - This file sets up a DNS Zone for the App Service Backend.
 
-    `
+    ```
     resource "azurerm_private_dns_zone" "dnsprivatezone" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = azurerm_resource_group.rg.name
@@ -259,11 +259,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dnszonelink" {
   private_dns_zone_name = azurerm_private_dns_zone.dnsprivatezone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
 }
-    `
+    ```
 
 5. 5_private_endpoint.tf - This file creates a private connection for the app service backend.
 
-    `
+    ```
     resource "azurerm_private_endpoint" "privateendpoint" {
   name                = "backwebappprivateendpoint"
   location            = azurerm_resource_group.rg.location
@@ -282,11 +282,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dnszonelink" {
     is_manual_connection           = false
   }
 }
-    `
+    ```
 
 6. 6_vm.tf - This file creates a VM for the GitHub Action Self-Hosted runner. This is necessary as we need a resource in the same VNET to deploy the app in the backend app service. The backend Python Flask-based API code is deployed using GitHub actions.
 
-    `
+    ```
     variable "ssh_key_path" {
   description = "The path where the SSH key files will be created"
   default     = "~/.ssh/id_rsa_terraform"
@@ -320,14 +320,14 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
-    `
+    ```
 
 In addition to these, there are dedicated files for variables (variable.tf), environment-specific variables (env.tfvars), and data for non-Terraform managed existing resources (data.tf).
 
 
 7. env.tfvars
 
-`
+```
 resource_group_name     = "rg-its-sls-dev-wu-3"
 key_vault_name          = "kv-its-az-1"
 resource_group_location = "westus"
@@ -351,4 +351,4 @@ dns_private_zone_name      = "privatelink.azurewebsites.net"
 private_dns_zone_link_name = "cs-hack-dns-zone-link-dev"
 app_tech_stack             = "PYTHON|3.11"
 
-`
+```
